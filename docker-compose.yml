@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12@@##6162kkk
+      POSTGRES_DB: kai-mono-db
+    ports:
+      - "5542:5432"

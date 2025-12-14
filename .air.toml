@@ -1,0 +1,35 @@
+# .air.toml
+
+# Tên app
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Lệnh build (chỉ định main file)
+ cmd = "go build -o ./tmp/main.exe ./cmd/main.go"
+
+  # File output sau khi build
+  bin = "tmp/main.exe"
+
+  # Delay reload sau mỗi lần thay đổi (ms)
+  delay = 1000
+
+  # Các file hoặc thư mục cần theo dõi
+  include_dir = ["cmd", "internal", "pkg"]
+
+  # Các phần mở rộng file cần theo dõi
+  include_ext = ["go", "env"]
+
+  # Bỏ qua mấy thư mục này để tránh vòng lặp vô tận
+  exclude_dir = ["tmp", "vendor", "node_modules"]
+
+[log]
+  # Hiển thị log nhiều hơn
+  time = true
+  color = true
+
+[dev]
+  # Tự động restart khi build thành công
+  autorestart = true
+  # Tự clear terminal
+  clean_on_rebuild = true
