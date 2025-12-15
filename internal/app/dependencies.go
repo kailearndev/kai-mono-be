@@ -3,8 +3,7 @@ package app
 import (
 	"log"
 
-	"kai-mono-be/internal/domain/home"
-	"kai-mono-be/internal/domain/product"
+	"kai-mono-be/internal/domain/menu"
 	"kai-mono-be/internal/domain/upload"
 	"kai-mono-be/internal/domain/user"
 	"kai-mono-be/pkg/cloudstorage"
@@ -14,10 +13,9 @@ import (
 
 // Dependencies holds all application dependencies
 type Dependencies struct {
-	ProductHandler *product.Handler
-	UserHandler    *user.Handler
-	HomeHandler    *home.Handler
-	UploadHandler  *upload.Handler
+	UserHandler   *user.Handler
+	UploadHandler *upload.Handler
+	MenuHandler   *menu.Handler
 }
 
 // InitDependencies sets up all repositories, services, and handlers
@@ -34,18 +32,18 @@ func InitDependencies(db *gorm.DB, config *Config) *Dependencies {
 	}
 
 	return &Dependencies{
-		ProductHandler: initProductHandler(db),
-		UserHandler:    initUserHandler(db),
-		HomeHandler:    initHomeHandler(db),
-		UploadHandler:  upload.NewHandler(storage),
+		// ProductHandler: initProductHandler(db),
+		UserHandler:   initUserHandler(db),
+		UploadHandler: upload.NewHandler(storage),
+		MenuHandler:   initMenuHandler(db),
 	}
 }
 
-func initProductHandler(db *gorm.DB) *product.Handler {
-	repo := product.NewRepository(db)
-	service := product.NewService(repo)
-	return product.NewHandler(service)
-}
+// func initProductHandler(db *gorm.DB) *product.Handler {
+// 	repo := product.NewRepository(db)
+// 	service := product.NewService(repo)
+// 	return product.NewHandler(service)
+// }
 
 func initUserHandler(db *gorm.DB) *user.Handler {
 	repo := user.NewRepository(db)
@@ -53,8 +51,8 @@ func initUserHandler(db *gorm.DB) *user.Handler {
 	return user.NewHandler(service)
 }
 
-func initHomeHandler(db *gorm.DB) *home.Handler {
-	repo := home.NewRepository(db)
-	service := home.NewService(repo)
-	return home.NewHandler(service)
+func initMenuHandler(db *gorm.DB) *menu.Handler {
+	repo := menu.NewRepository(db)
+	service := menu.NewService(repo)
+	return menu.NewHandler(service)
 }

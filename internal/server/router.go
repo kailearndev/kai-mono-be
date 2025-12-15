@@ -1,7 +1,7 @@
 package server
 
 import (
-	"kai-mono-be/internal/domain/home"
+	"kai-mono-be/internal/domain/menu"
 	"kai-mono-be/internal/domain/product"
 	"kai-mono-be/internal/domain/upload"
 	"kai-mono-be/internal/domain/user"
@@ -14,7 +14,8 @@ type RouteConfig struct {
 	ProductHandler *product.Handler
 	UploadHandler  *upload.Handler
 	UserHandler    *user.Handler
-	HomeHandler    *home.Handler
+	MenuHandler    *menu.Handler
+
 	// sau này có thể thêm:
 	// CategoryHandler *category.Handler
 	// AuthHandler     *auth.Handler
@@ -36,8 +37,9 @@ func SetupRouter(cfg RouteConfig) *gin.Engine {
 	if cfg.UserHandler != nil {
 		cfg.UserHandler.RegisterRoutes(r)
 	}
-	if cfg.HomeHandler != nil {
-		cfg.HomeHandler.RegisterRoutes(r)
+
+	if cfg.MenuHandler != nil {
+		cfg.MenuHandler.RegisterRoutes(r)
 	}
 	// future:
 	// if cfg.CategoryHandler != nil {

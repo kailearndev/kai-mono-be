@@ -3,7 +3,7 @@ package app
 import (
 	"log"
 
-	"kai-mono-be/internal/domain/home"
+	"kai-mono-be/internal/domain/menu"
 	"kai-mono-be/internal/domain/product"
 	"kai-mono-be/internal/domain/user"
 	"kai-mono-be/pkg/db"
@@ -32,7 +32,7 @@ func autoMigrate(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&product.Product{},
 		&user.User{},
-		&home.HomeHero{},
-		&home.HomeHeroTranslation{},
+		&menu.Menu{},
+		&menu.MenuTranslation{},
 	)
 }
