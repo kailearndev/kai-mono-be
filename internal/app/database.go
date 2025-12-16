@@ -3,9 +3,12 @@ package app
 import (
 	"log"
 
+	"kai-mono-be/internal/domain/about"
+	"kai-mono-be/internal/domain/introduce"
 	"kai-mono-be/internal/domain/menu"
 	"kai-mono-be/internal/domain/product"
 	"kai-mono-be/internal/domain/user"
+	"kai-mono-be/internal/domain/work_project"
 	"kai-mono-be/pkg/db"
 
 	"gorm.io/gorm"
@@ -34,5 +37,11 @@ func autoMigrate(db *gorm.DB) error {
 		&user.User{},
 		&menu.Menu{},
 		&menu.MenuTranslation{},
+		&introduce.Introduce{},
+		&introduce.IntroduceTranslation{},
+		&work_project.WorkProject{},
+		&work_project.WorkProjectTranslation{},
+		&about.About{},
+		&about.AboutTranslation{},
 	)
 }

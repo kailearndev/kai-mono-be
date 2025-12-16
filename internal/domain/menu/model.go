@@ -29,3 +29,7 @@ type MenuTranslation struct {
 
 	Menu Menu `gorm:"foreignKey:MenuID;references:ID" json:"-"`
 }
+
+func (m MenuTranslationDTO) GetLang() string {
+	return m.Lang
+}

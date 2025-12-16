@@ -1,4 +1,4 @@
-package menu
+package introduce
 
 import (
 	"net/http"
@@ -20,17 +20,17 @@ func NewHandler(s Service) *Handler {
 
 func (h *Handler) RegisterRoutes(r *gin.Engine) {
 	// Register product-related routes here
-	g := r.Group("/menus")
+	g := r.Group("/introduces")
 	{
-		g.GET("/", h.ListMenus)
-		g.GET("/:id", h.GetMenuByID)
-		g.POST("/", h.CreateMenu)
-		g.PATCH("/:id", h.UpdateMenu)
-		g.DELETE("/:id", h.DeleteMenu)
+		g.GET("/", h.ListIntroduces)
+		g.GET("/:id", h.GetIntroduceByID)
+		g.POST("/", h.CreateIntroduce)
+		g.PATCH("/:id", h.UpdateIntroduce)
+		g.DELETE("/:id", h.DeleteIntroduce)
 	}
 }
 
-func (h *Handler) ListMenus(c *gin.Context) {
+func (h *Handler) ListIntroduces(c *gin.Context) {
 	// Implementation of listing products
 	lang := c.Query("lang")
 	limit := 10
@@ -48,7 +48,7 @@ func (h *Handler) ListMenus(c *gin.Context) {
 		}
 	}
 
-	items, total, err := h.service.ListMenus(lang, limit, offset)
+	items, total, err := h.service.ListIntroduces(lang, limit, offset)
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, err.Error())
 		return
@@ -61,13 +61,13 @@ func (h *Handler) ListMenus(c *gin.Context) {
 
 }
 
-func (h *Handler) CreateMenu(c *gin.Context) {
-	var menu CreateMenuDTO
-	if err := c.ShouldBindJSON(&menu); err != nil {
+func (h *Handler) CreateIntroduce(c *gin.Context) {
+	var introduce CreateIntroduceDTO
+	if err := c.ShouldBindJSON(&introduce); err != nil {
 		response.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	p, err := h.service.CreateMenu(menu)
+	p, err := h.service.CreateIntroduce(introduce)
 	if err != nil {
 		response.Error(c, http.StatusBadRequest, err.Error())
 		return
@@ -75,9 +75,9 @@ func (h *Handler) CreateMenu(c *gin.Context) {
 	response.Created(c, p)
 }
 
-func (h *Handler) GetMenuByID(c *gin.Context) {
+func (h *Handler) GetIntroduceByID(c *gin.Context) {
 	id := c.Param("id")
-	p, err := h.service.GetMenuByID(uuid.MustParse(id))
+	p, err := h.service.GetIntroduceByID(uuid.MustParse(id))
 	if err != nil {
 		response.Error(c, http.StatusNotFound, err.Error())
 		return
@@ -85,31 +85,31 @@ func (h *Handler) GetMenuByID(c *gin.Context) {
 	}
 	response.Success(c, p)
 }
-func (h *Handler) UpdateMenu(c *gin.Context) {
+func (h *Handler) UpdateIntroduce(c *gin.Context) {
 	id := c.Param("id")
-	var menu UpdateMenuDTO
-	if err := c.ShouldBindJSON(&menu); err != nil {
+	var introduce UpdateIntroduceDTO
+	if err := c.ShouldBindJSON(&introduce); err != nil {
 		response.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	menuID, err := uuid.Parse(id)
+	introduceID, err := uuid.Parse(id)
 	if err != nil {
-		response.Error(c, http.StatusBadRequest, "invalid menu id")
+		response.Error(c, http.StatusBadRequest, "invalid introduce id")
 		return
 	}
-	_, err = h.service.UpdateMenu(menuID, menu)
+	_, err = h.service.UpdateIntroduce(introduceID, introduce)
 	if err != nil {
 		response.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	response.Success(c, "Menu updated successfully")
+	response.Success(c, "Introduce updated successfully")
 }
 
-func (h *Handler) DeleteMenu(c *gin.Context) {
+func (h *Handler) DeleteIntroduce(c *gin.Context) {
 	id := c.Param("id")
-	if err := h.service.DeleteMenu(uuid.MustParse(id)); err != nil {
+	if err := h.service.DeleteIntroduce(uuid.MustParse(id)); err != nil {
 		response.Error(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	response.Success(c, gin.H{"message": "menu deleted"})
+	response.Success(c, gin.H{"message": "introduce deleted"})
 }

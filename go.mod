@@ -5,6 +5,12 @@ go 1.25.3
 require github.com/lib/pq v1.10.9
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/go-sql-driver/mysql v1.8.1 // indirect
+	gorm.io/driver/mysql v1.5.6 // indirect
+)
+
+require (
 	github.com/aws/aws-sdk-go-v2 v1.39.4 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.2 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.31.15 // indirect
@@ -64,6 +70,7 @@ require (
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.36.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
+	gorm.io/datatypes v1.2.7
 	gorm.io/driver/postgres v1.6.0 // indirect
 	gorm.io/gorm v1.31.0 // indirect
 )
