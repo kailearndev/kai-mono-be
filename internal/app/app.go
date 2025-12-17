@@ -20,9 +20,12 @@ func Run() {
 
 	// 4. Setup router with all handlers
 	router := server.SetupRouter(server.RouteConfig{
-		UploadHandler: deps.UploadHandler,
-		UserHandler:   deps.UserHandler,
-		MenuHandler:   deps.MenuHandler,
+		UploadHandler:      deps.UploadHandler,
+		UserHandler:        deps.UserHandler,
+		MenuHandler:        deps.MenuHandler,
+		IntroduceHandler:   deps.IntroduceHandler,
+		WorkProjectHandler: deps.WorkProjectHandler,
+		AboutHandler:       deps.AboutHandler,
 	})
 
 	// 5. Start server

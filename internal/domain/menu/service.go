@@ -2,6 +2,7 @@ package menu
 
 import (
 	"errors"
+	"kai-mono-be/pkg/validator"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,9 +26,7 @@ func NewService(r Repository) Service {
 }
 
 func (s *service) ListMenus(lang string, limit, offset int) ([]Menu, int64, error) {
-	if lang == "" {
-		lang = "en"
-	}
+
 	items, err := s.repo.FindAll(lang, limit, offset)
 	if err != nil {
 		return nil, 0, err
@@ -49,6 +48,11 @@ func (s *service) GetMenuByID(id uuid.UUID) (Menu, error) {
 }
 
 func (s *service) CreateMenu(dto CreateMenuDTO) (Menu, error) {
+	if len(dto.Translations) > 0 {
+		if err := validator.ValidateUniqueLang(dto.Translations); err != nil {
+			return Menu{}, err
+		}
+	}
 	// validation cơ bản
 	if dto.Slug == "" {
 		return Menu{}, errors.New("tên slug không được để trống")
@@ -59,11 +63,21 @@ func (s *service) CreateMenu(dto CreateMenuDTO) (Menu, error) {
 		Order:    dto.Order,
 		IsActive: dto.IsActive,
 	}
+	isSlugExist, _ := s.repo.FindBySlug(dto.Slug)
+	if isSlugExist.ID != uuid.Nil {
+		return Menu{}, errors.New("slug đã tồn tại")
+	}
 	if len(dto.Translations) == 0 {
 		return Menu{}, errors.New("cần ít nhất một bản dịch cho menu")
 	}
 	// map translations
 	for _, t := range dto.Translations {
+		if t.Lang == "" || t.Title == "" {
+			return Menu{}, errors.New("ngôn ngữ và tiêu đề bản dịch không được để trống")
+		}
+		if err := validator.ValidateUniqueLang(dto.Translations); err != nil {
+			return Menu{}, err
+		}
 		menu.Translations = append(menu.Translations, MenuTranslation{
 			Lang:  t.Lang,
 			Title: t.Title,
@@ -76,6 +90,12 @@ func (s *service) CreateMenu(dto CreateMenuDTO) (Menu, error) {
 	return menu, nil
 }
 func (s *service) UpdateMenu(id uuid.UUID, dto UpdateMenuDTO) (Menu, error) {
+	if len(dto.Translations) > 0 {
+		if err := validator.ValidateUniqueLang(dto.Translations); err != nil {
+			return Menu{}, err
+		}
+	}
+
 	var result Menu
 
 	err := s.repo.WithTx(func(tx *gorm.DB) error {
